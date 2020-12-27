@@ -6,10 +6,14 @@ export default function Quiz() {
 
     function keydown(e) {
         console.log(e.key)
+
     }
 
     React.useEffect(() => {
         window.addEventListener('keydown', keydown)
+        return () => {
+            window.removeEventListener('keydown', keydown)
+        }
     }, [])
 
     return (
