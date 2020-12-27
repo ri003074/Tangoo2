@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
 import { Form, Col, Button } from 'react-bootstrap'
+import AddComponent from '../components/AddComponent'
 
 export default function Add() {
     function clickTest(e) {
@@ -13,23 +14,8 @@ export default function Add() {
             <Head>
                 <title>Add</title>
             </Head>
+            <AddComponent/>
 
-            <form onSubmit={clickTest}>
-                <Form.Group>
-                    <Col sm="4" className="mb-2">
-                        <Form.Control size="sm" type="text" name="english_phrase" placeholder="English Phrase" />
-                    </Col>
-                    <Col sm="4" className="mb-2">
-                        <Form.Control size="sm" type="text" name="japanese_phrase" placeholder="Japanese Phrase" />
-                    </Col>
-                    <Col sm="4">
-                        <Form.Control size="sm" type="text" name="english_word" placeholder="English Word" />
-                    </Col>
-                </Form.Group>
-                <Button className="ml-3" variant="primary" type="submit" >
-                    Submit
-            </Button>
-            </form>
         </Layout>
     )
 }
