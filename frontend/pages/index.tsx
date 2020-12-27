@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
-import { Table } from 'react-bootstrap'
 import Display from '../components/DisplayComponent'
 
 export async function getServerSideProps() {
