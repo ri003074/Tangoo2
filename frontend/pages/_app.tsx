@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import { Provider } from 'react-redux'
-import { useStore } from '../store'
+import { useStore } from '../store.tsx'
 
 export default function MyApp({ Component, pageProps }) {
   const store   = useStore(pageProps.initialReduxState)
