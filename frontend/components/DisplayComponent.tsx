@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
 import { Table } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
-
-export default function Display({ contents }) {
+export default function Display({contents}) {
 
     return (
         <Table>
