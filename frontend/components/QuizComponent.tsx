@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { correctType, typing, nextQuiz } from '../store'
 
-const Counter = () => {
+export default function Quiz (){
     // const { typing, contents, quizNumber, loadExampleData, correctType } = useCounter()
     const contents = useSelector((state) => state.contents)
     const dispatch = useDispatch()
@@ -43,9 +43,9 @@ const Counter = () => {
             {
                 contents[quizNumber] ? (
                     <div>
-                        <p>{contents[quizNumber].phrase_ja}</p>
-                        <p>{contents[quizNumber].phrase_quiz}</p>
-                        <p>{contents[quizNumber].word_blank}</p>
+                        <div style={{textAlign:'center'}}>{contents[quizNumber].phrase_ja}</div>
+                        <div style={{textAlign:'center'}}>{contents[quizNumber].phrase_quiz}</div>
+                        <div style={{textAlign:'center'}}>{contents[quizNumber].word_blank}</div>
                     </div>
                 ) : (
                         <p>loading...</p>
@@ -54,5 +54,3 @@ const Counter = () => {
         </div>
     )
 }
-
-export default Counter

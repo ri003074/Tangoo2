@@ -1,7 +1,7 @@
 import Layout from '../components/layout'
 import Head from 'next/head'
 import React from 'react'
-import Counter from '../components/counter'
+import QuizComponent from '../components/QuizComponent'
 
 export default function Quiz() {
 
@@ -10,7 +10,7 @@ export default function Quiz() {
             <Head>
                 <title>Quiz</title>
             </Head>
-            <Counter/>
+            <QuizComponent />
         </Layout>
     )
 }
