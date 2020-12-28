@@ -7,9 +7,11 @@ import React from 'react'
 import axios from 'axios'
 
 export default function Home() {
+
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const contents = useSelector((state) => state.contents)
+
   const loadContents = (data) => {
     return { type: 'LOAD_DATA', data }
   }
@@ -22,7 +24,8 @@ export default function Home() {
 
         let tmpData = []
         let contents = []
-        let contentsCount = response.data.length;
+        let contentsCount = response.data.length
+
         //Quiz用のデータを作成する。
         for (let i = 0; i < contentsCount; i++) {
           var content = response.data[i]
@@ -44,10 +47,7 @@ export default function Home() {
       })
     return () => {
     }
-
-
   }, [dispatch])
-
 
   return (
     <Layout>

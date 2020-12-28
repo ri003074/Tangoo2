@@ -14,8 +14,24 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'NEXT_QUIZ':
+            return {
+                ...state,
+                wordLocation: 1,
+                quizNumber: state.quizNumber + 1
+            }
+        case 'CORRECT_TYPE':
+            console.log("CORRECT_TYPE")
+
+            const wordLocation = state.wordLocation + 1
+            state.contents[state.quizNumber].word_blank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
+            console.log(state.contents[state.quizNumber].word_blank)
+            return {
+                ...state,
+                wordLocation: wordLocation,
+                contents: state.contents
+            }
         case 'TYPING':
-            console.log(state)
             return {
                 ...state,
                 count: initialState.count,
@@ -29,6 +45,18 @@ const reducer = (state = initialState, action) => {
         default:
             return state
     }
+}
+
+export const correctType = () => {
+    return { type: 'CORRECT_TYPE' }
+}
+
+export const nextQuiz = () => {
+    return { type: 'NEXT_QUIZ' }
+}
+
+export const typing = (key) => {
+    return { type: 'TYPING', key: key }
 }
 
 function initStore(preloadedState = initialState) {
