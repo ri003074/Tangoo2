@@ -15,7 +15,6 @@ export default function Add() {
                 <title>Add</title>
             </Head>
             <AddComponent/>
-
         </Layout>
     )
 }
