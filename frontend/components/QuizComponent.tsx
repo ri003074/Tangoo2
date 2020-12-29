@@ -1,7 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
 import { correctType, typing, nextQuiz } from '../store'
 
 export default function Quiz (){
@@ -28,7 +26,6 @@ export default function Quiz (){
                 quizNumber += 1
             }
         }
-
     }
 
     React.useEffect(() => {

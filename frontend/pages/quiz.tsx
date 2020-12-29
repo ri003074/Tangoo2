@@ -1,4 +1,4 @@
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import Head from 'next/head'
 import React from 'react'
 import QuizComponent from '../components/QuizComponent'

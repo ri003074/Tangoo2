@@ -1,6 +1,6 @@
 import Link from 'next/link'
+import { Navbar } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Navbar, Nav } from 'react-bootstrap'
 
 export default function Layout({ children }) {
     return (
