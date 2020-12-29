@@ -2,9 +2,8 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { correctType, typing, nextQuiz } from '../store'
 
-export default function Quiz (){
+export default function Quiz({ contents }) {
     // const { typing, contents, quizNumber, loadExampleData, correctType } = useCounter()
-    const contents = useSelector((state) => state.contents)
     const dispatch = useDispatch()
     let wordLocation = useSelector((state) => state.wordLocation)
     let quizNumber = useSelector((state) => state.quizNumber)
@@ -13,7 +12,7 @@ export default function Quiz (){
         console.log(e.key)
         console.log(wordLocation)
         typing(e.key)
-        console.log(contents[quizNumber].word_en[wordLocation])
+        console.log(contents)
         if (contents[quizNumber].word_en[wordLocation] === e.key) {
             dispatch(correctType())
             console.log("correct type")
@@ -40,9 +39,9 @@ export default function Quiz (){
             {
                 contents[quizNumber] ? (
                     <div>
-                        <div style={{textAlign:'center'}}>{contents[quizNumber].phrase_ja}</div>
-                        <div style={{textAlign:'center'}}>{contents[quizNumber].phrase_quiz}</div>
-                        <div style={{textAlign:'center'}}>{contents[quizNumber].word_blank}</div>
+                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].phrase_ja}</div>
+                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].phrase_quiz}</div>
+                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].word_blank}</div>
                     </div>
                 ) : (
                         <p>loading...</p>
