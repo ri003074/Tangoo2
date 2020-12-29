@@ -1,84 +1,65 @@
 import { useMemo } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import axios from 'axios'
 
 let store
 
 const initialState = {
-    lastUpdate: 0,
-    light: false,
     count: 0,
     word: 'k',
     contents: [],
     quizNumber: 0,
     wordLocation: 1,
-    isFetching: false,
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'TICK':
+        case 'NEXT_QUIZ':
             return {
                 ...state,
-                lastUpdate: action.lastUpdate,
-                light: !!action.light,
+                wordLocation: 1,
+                quizNumber: state.quizNumber + 1
             }
-        case 'INCREMENT':
+        case 'CORRECT_TYPE':
+            console.log("CORRECT_TYPE")
+
+            const wordLocation = state.wordLocation + 1
+            state.contents[state.quizNumber].word_blank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
+            console.log(state.contents[state.quizNumber].word_blank)
             return {
                 ...state,
-                count: state.count + 1,
-                word: initialState.word,
-            }
-        case 'DECREMENT':
-            return {
-                ...state,
-                count: state.count - 1,
-                word: initialState.word,
-            }
-        case 'RESET':
-            return {
-                ...state,
-                count: state.count,
-                word: initialState.word,
+                wordLocation: wordLocation,
+                contents: state.contents
             }
         case 'TYPING':
-            console.log(state)
             return {
                 ...state,
                 count: initialState.count,
                 word: action.key,
+            }
+        case 'LOAD_DATA':
+            return {
+                ...state,
+                contents: action.data
             }
         default:
             return state
     }
 }
 
-function initStore(preloadedState = initialState) {
-    preloadedState.isFetching = true
-    axios.get('http://localhost:8000/api/').then((response) => {
-        let tmpData = []
-        let contents = []
-        let contentsCount = response.data.length;
-        //Quiz用のデータを作成する。
-        for (let i = 0; i < contentsCount; i++) {
-            var content = response.data[i]
-            var word_en_begin = content.word_en.slice(0, 1);
+export const correctType = () => {
+    return { type: 'CORRECT_TYPE' }
+}
 
-            content.word_en_begin = word_en_begin
-            content.word_blank = word_en_begin + '_'.repeat(content.word_en.length - 1)
-            content.phrase_quiz = content.phrase_en.replace(content.word_en, '_'.repeat(content.word_en.length)) //英語のフレーズのなかで問題となる部分をを'_'で置き換える
-            content.correct_answer_rate = (content.c_counter / content.s_counter) * 100
-            tmpData.push(content)
-        }
-        tmpData.sort(function (a, b) { //正答率が低い順番に並び替える
-            return a.correct_answer_rate - b.correct_answer_rate
-        })
-        contents = tmpData
-        preloadedState.contents = contents
-        preloadedState.isFetching = false
-    })
-    preloadedState.count = 3
+export const nextQuiz = () => {
+    return { type: 'NEXT_QUIZ' }
+}
+
+export const typing = (key) => {
+    return { type: 'TYPING', key: key }
+}
+
+function initStore(preloadedState = initialState) {
     return createStore(
         reducer,
         preloadedState,
