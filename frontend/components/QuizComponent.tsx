@@ -39,9 +39,9 @@ export default function Quiz({ contents }) {
             {
                 contents[quizNumber] ? (
                     <div>
-                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].phrase_ja}</div>
-                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].phrase_quiz}</div>
-                        <div style={{ textAlign: 'center' }}>{contents[quizNumber].word_blank}</div>
+                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0' }}>{contents[quizNumber].phrase_ja}</div>
+                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0' }}>{contents[quizNumber].phrase_quiz}</div>
+                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0', letterSpacing:'0.1rem' }}>{contents[quizNumber].word_blank}</div>
                     </div>
                 ) : (
                         <p>loading...</p>
