@@ -6,7 +6,8 @@ export default function Quiz({ contents }) {
     const dispatch = useDispatch()
     const missCount = useSelector((state) => state.missCount)
     const quizNumber = useSelector((state) => state.quizNumber)
-    const wordLocation = useSelector((state) => state.wordLocation) //TODO without this statement, program doesn't work. need to check
+    // const wordLocation = useSelector((state) => state.wordLocation) //TODO without this statement, program doesn't work. need to check
+    const wordBlank = useSelector((state) => state.wordBlank)
 
     const keydown = e => {
         dispatch(typing(e.key))
@@ -28,7 +29,7 @@ export default function Quiz({ contents }) {
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{missCount}</div>
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[quizNumber].phrase_ja}</div>
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[quizNumber].phrase_quiz}</div>
-                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0', letterSpacing: '0.1rem' }}>{contents[quizNumber].word_blank}</div>
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0', letterSpacing: '0.1rem' }}>{wordBlank}</div>
                     </div>
                 ) : (
                         <p>loading...</p>

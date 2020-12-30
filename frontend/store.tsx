@@ -10,6 +10,7 @@ const initialState = {
     missCount: 0,
     quizNumber: 0,
     wordLocation: 1,
+    wordBlank:''
 }
 
 const reducer = (state = initialState, action) => {
@@ -24,13 +25,14 @@ const reducer = (state = initialState, action) => {
                 let wordLocation = state.wordLocation + 1
                 let quizNumber = state.quizNumber
                 let missCount = state.missCount
-                state.contents[state.quizNumber].word_blank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
-                console.log(state.contents[state.quizNumber].word_blank)
+                let wordBlank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
+                console.log(wordBlank)
 
                 if (state.contents[state.quizNumber].word_en.length === wordLocation) {
                     quizNumber = quizNumber + 1
                     wordLocation = 1
                     missCount = 0
+                    wordBlank = state.contents[quizNumber].word_blank
                 }
 
                 return {
@@ -38,12 +40,14 @@ const reducer = (state = initialState, action) => {
                     wordLocation: wordLocation,
                     quizNumber: quizNumber,
                     missCount: missCount,
+                    wordBlank: wordBlank,
                 }
             }
         case 'LOAD_DATA':
             return {
                 ...state,
-                contents: action.data
+                contents: action.data,
+                wordBlank:action.data[state.quizNumber].word_blank
             }
         default:
             return state
