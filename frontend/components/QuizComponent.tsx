@@ -1,30 +1,15 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { correctType, typing, nextQuiz } from '../store'
+import { typing } from '../store'
 
 export default function Quiz({ contents }) {
-    // const { typing, contents, quizNumber, loadExampleData, correctType } = useCounter()
     const dispatch = useDispatch()
-    let wordLocation = useSelector((state) => state.wordLocation)
-    let quizNumber = useSelector((state) => state.quizNumber)
+    const missCount = useSelector((state) => state.missCount)
+    const quizNumber = useSelector((state) => state.quizNumber)
+    const wordLocation = useSelector((state) => state.wordLocation) //TODO without this statement, program doesn't work. need to check
 
-    function keydown(e) {
-        console.log(e.key)
-        console.log(wordLocation)
-        typing(e.key)
-        console.log(contents)
-        if (contents[quizNumber].word_en[wordLocation] === e.key) {
-            dispatch(correctType())
-            console.log("correct type")
-            wordLocation += 1
-
-            if (wordLocation === contents[quizNumber].word_en.length) {
-                console.log("next quiz")
-                dispatch(nextQuiz())
-                wordLocation = 1
-                quizNumber += 1
-            }
-        }
+    const keydown = e => {
+        dispatch(typing(e.key))
     }
 
     React.useEffect(() => {
@@ -39,9 +24,11 @@ export default function Quiz({ contents }) {
             {
                 contents[quizNumber] ? (
                     <div>
-                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0' }}>{contents[quizNumber].phrase_ja}</div>
-                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0' }}>{contents[quizNumber].phrase_quiz}</div>
-                        <div style={{ textAlign: 'center', margin:' 8px 0 8px 0', letterSpacing:'0.1rem' }}>{contents[quizNumber].word_blank}</div>
+                        
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{missCount}</div>
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[quizNumber].phrase_ja}</div>
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[quizNumber].phrase_quiz}</div>
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0', letterSpacing: '0.1rem' }}>{contents[quizNumber].word_blank}</div>
                     </div>
                 ) : (
                         <p>loading...</p>

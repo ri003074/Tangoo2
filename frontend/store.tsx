@@ -6,36 +6,39 @@ let store
 
 const initialState = {
     count: 0,
-    word: 'k',
     contents: [],
+    missCount: 0,
     quizNumber: 0,
     wordLocation: 1,
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'NEXT_QUIZ':
-            return {
-                ...state,
-                wordLocation: 1,
-                quizNumber: state.quizNumber + 1
-            }
-        case 'CORRECT_TYPE':
-            console.log("CORRECT_TYPE")
-
-            const wordLocation = state.wordLocation + 1
-            state.contents[state.quizNumber].word_blank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
-            console.log(state.contents[state.quizNumber].word_blank)
-            return {
-                ...state,
-                wordLocation: wordLocation,
-                contents: state.contents
-            }
         case 'TYPING':
-            return {
-                ...state,
-                count: initialState.count,
-                word: action.key,
+            if (state.contents[state.quizNumber].word_en[state.wordLocation] !== action.key) {
+                return {
+                    ...state,
+                    missCount: state.missCount + 1
+                }
+            } else {
+                let wordLocation = state.wordLocation + 1
+                let quizNumber = state.quizNumber
+                let missCount = state.missCount
+                state.contents[state.quizNumber].word_blank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
+                console.log(state.contents[state.quizNumber].word_blank)
+
+                if (state.contents[state.quizNumber].word_en.length === wordLocation) {
+                    quizNumber = quizNumber + 1
+                    wordLocation = 1
+                    missCount = 0
+                }
+
+                return {
+                    ...state,
+                    wordLocation: wordLocation,
+                    quizNumber: quizNumber,
+                    missCount: missCount,
+                }
             }
         case 'LOAD_DATA':
             return {
@@ -45,14 +48,6 @@ const reducer = (state = initialState, action) => {
         default:
             return state
     }
-}
-
-export const correctType = () => {
-    return { type: 'CORRECT_TYPE' }
-}
-
-export const nextQuiz = () => {
-    return { type: 'NEXT_QUIZ' }
 }
 
 export const typing = (key) => {
