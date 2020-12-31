@@ -88,6 +88,24 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 quizRandom: true
             }
+        case 'DELETE':
+            let contents = [...state.contents]
+            console.log(contents.length)
+            if (confirm("Are you sure you want to delete?")) {
+
+                axios //delete from database
+                    .delete("http://localhost:8000/api/" + state.contents[action.itemNumber].id + "/", state.contents[action.itemNumber])
+                    .then(function (response) {
+                        console.log(response.data)
+                    })
+                // contents.splice(action.itemNumber, 1) //delete from contents
+                contents.splice(action.itemNumber, 1)
+            }
+            console.log("after", contents.length)
+            return {
+                ...state,
+                contents: contents,
+            }
         default:
             return state
     }
@@ -99,6 +117,13 @@ export const typing = (key) => {
 
 export const random = () => {
     return { type: 'RANDOM' }
+}
+
+export const deleteContent = (index) => {
+    return {
+        type: 'DELETE',
+        itemNumber: index
+    }
 }
 
 function initStore(preloadedState = initialState) {

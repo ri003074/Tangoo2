@@ -6,14 +6,12 @@ import { useSelector } from 'react-redux'
 
 export default function Home() {
 
-  const contents = useSelector((state) => state.contents)
-
   return (
     <Layout>
       <Head>
         <title>Tangoo</title>
       </Head>
-      <Display contents={contents} />
+      <Display />
     </Layout>
   )
 }
