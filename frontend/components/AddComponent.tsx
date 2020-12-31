@@ -1,4 +1,3 @@
-import { Form, Col, Button } from 'react-bootstrap'
 import axios from 'axios'
 
 export default function Add() {
@@ -26,22 +25,16 @@ export default function Add() {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <Form.Group>
-                <Col sm="4">
-                    <Form.Control type="text" name="english_phrase" placeholder="English Phrase" required />
-                </Col>
-            </Form.Group>
-            <Form.Group>
-                <Col sm="4">
-                    <Form.Control type="text" name="japanese_phrase" placeholder="Japanese Phrase" required />
-                </Col>
-            </Form.Group>
-            <Form.Group>
-                <Col sm="4">
-                    <Form.Control type="text" name="english_word" placeholder="English Word" required />
-                </Col>
-            </Form.Group>
-            <button className="btn ml-3" type="submit" >
+            <div className="form-group ml-2">
+                <input className="form-control col-4" style={{ border: 'none' }} type="text" name="english_phrase" placeholder="English Phrase" required />
+            </div>
+            <div className="form-group ml-2">
+                <input className="form-control col-4" style={{ border: 'none' }} type="text" name="japanese_phrase" placeholder="Japanese Phrase" required />
+            </div>
+            <div className="form-group ml-2">
+                <input className="form-control col-4" style={{ border: 'none' }} type="text" name="english_word" placeholder="English Word" required />
+            </div>
+            <button className="btn ml-2" type="submit" >
                 Add
             </button>
         </form>
