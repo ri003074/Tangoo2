@@ -12,18 +12,14 @@ const initialState = {
     wordBlank: '',
     totalQuizNumber: 0,
     correctCounter: 0,
-    studiedCounter:1,
+    studiedCounter: 1,
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'TYPING':
-            if (state.contents[state.currentQuizNumber].word_en[state.wordLocation] !== action.key) {
-                return {
-                    ...state,
-                    missCount: state.missCount + 1
-                }
-            } else {
+            if (state.contents[state.currentQuizNumber].word_en[state.wordLocation] === action.key || state.missCount > 5) {
+
                 let wordLocation = state.wordLocation + 1
                 let currentQuizNumber = state.currentQuizNumber
                 let missCount = state.missCount
@@ -36,13 +32,17 @@ const reducer = (state = initialState, action) => {
                     missCount = 0
                     wordBlank = state.contents[currentQuizNumber].word_blank
                 }
-
                 return {
                     ...state,
                     wordLocation: wordLocation,
                     currentQuizNumber: currentQuizNumber,
                     missCount: missCount,
                     wordBlank: wordBlank,
+                }
+            } else {
+                return {
+                    ...state,
+                    missCount: state.missCount + 1
                 }
             }
         case 'LOAD_DATA':
