@@ -27,19 +27,23 @@ export default function Add() {
     return (
         <form onSubmit={handleSubmit}>
             <Form.Group>
-                <Col sm="4" className="mb-2">
-                    <Form.Control size="sm" type="text" name="english_phrase" placeholder="English Phrase" required />
-                </Col>
-                <Col sm="4" className="mb-2">
-                    <Form.Control size="sm" type="text" name="japanese_phrase" placeholder="Japanese Phrase" required />
-                </Col>
                 <Col sm="4">
-                    <Form.Control size="sm" type="text" name="english_word" placeholder="English Word" required />
+                    <Form.Control type="text" name="english_phrase" placeholder="English Phrase" required />
                 </Col>
             </Form.Group>
-            <Button className="ml-3" variant="primary" type="submit" >
-                Submit
-            </Button>
+            <Form.Group>
+                <Col sm="4">
+                    <Form.Control type="text" name="japanese_phrase" placeholder="Japanese Phrase" required />
+                </Col>
+            </Form.Group>
+            <Form.Group>
+                <Col sm="4">
+                    <Form.Control type="text" name="english_word" placeholder="English Word" required />
+                </Col>
+            </Form.Group>
+            <button className="btn ml-3" type="submit" >
+                Add
+            </button>
         </form>
     )
 }

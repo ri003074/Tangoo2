@@ -24,6 +24,13 @@ a:hover{
   background-color:#15202B;
 }
 
+.btn{
+    color:#FFFF !important;
+}
+.btn:hover{
+    color:#8899A6
+}
+
 
 /* $main_moji_color : #FFF;
 $sub_moji_color:#8899A6;
