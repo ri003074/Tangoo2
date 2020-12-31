@@ -31,6 +31,7 @@ export default function Quiz({ contents }) {
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[currentQuizNumber].phrase_ja} ({((correctCounter / studiedCounter) * 100).toFixed(1)}%)</div>
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{contents[currentQuizNumber].phrase_quiz}</div>
                         <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0', letterSpacing: '0.1em', fontSize: '2rem' }}>{wordBlank}</div>
+                        <div style={{ textAlign: 'center', margin: ' 8px 0 8px 0' }}>{missCount}</div>
                     </div>
                 ) : (
                         <p>loading...</p>
