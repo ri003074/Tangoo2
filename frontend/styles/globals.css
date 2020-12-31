@@ -26,6 +26,8 @@ a:hover{
 
 .btn{
     color:#FFFF !important;
+    padding:8px !important;
+    border:none !important;
 }
 .btn:hover{
     color:#8899A6

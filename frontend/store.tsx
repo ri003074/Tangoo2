@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import axios from 'axios'
 
 let store
 
@@ -13,6 +14,7 @@ const initialState = {
     totalQuizNumber: 0,
     correctCounter: 0,
     studiedCounter: 1,
+    quizRandom: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -24,13 +26,37 @@ const reducer = (state = initialState, action) => {
                 let currentQuizNumber = state.currentQuizNumber
                 let missCount = state.missCount
                 let wordBlank = state.contents[state.currentQuizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.currentQuizNumber].word_blank.length - wordLocation);
+                let correctCounter = state.correctCounter
+                let studiedCounter = state.studiedCounter
+                let data = state.contents[state.currentQuizNumber]
+
                 console.log(wordBlank)
 
                 if (state.contents[state.currentQuizNumber].word_en.length === wordLocation) {
-                    currentQuizNumber = currentQuizNumber + 1
+                    if (state.quizRandom) {
+                        currentQuizNumber = Math.floor(Math.random() * state.contents.length)
+                    } else {
+                        currentQuizNumber = currentQuizNumber + 1
+                    }
+
+                    data.s_counter = studiedCounter + 1
+
+                    if (state.missCount === 0) {
+                        data.c_counter = correctCounter + 1
+                    }
+
+                    axios
+                        .put("http://localhost:8000/api/" + data.id + "/", data)
+                        .then(function (response) {
+                            console.log(response.data)
+                        })
+
+                    console.log(currentQuizNumber)
                     wordLocation = 1
                     missCount = 0
                     wordBlank = state.contents[currentQuizNumber].word_blank
+                    studiedCounter = state.contents[currentQuizNumber].s_counter
+                    correctCounter = state.contents[currentQuizNumber].c_counter
                 }
                 return {
                     ...state,
@@ -38,6 +64,8 @@ const reducer = (state = initialState, action) => {
                     currentQuizNumber: currentQuizNumber,
                     missCount: missCount,
                     wordBlank: wordBlank,
+                    studiedCounter: studiedCounter,
+                    correctCounter: correctCounter
                 }
             } else {
                 return {
@@ -50,7 +78,15 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 contents: action.data,
                 wordBlank: action.data[state.currentQuizNumber].word_blank,
-                totalQuizNumber: action.data.length
+                totalQuizNumber: action.data.length,
+                studiedCounter: action.data[state.currentQuizNumber].s_counter,
+                correctCounter: action.data[state.currentQuizNumber].c_counter
+            }
+
+        case 'RANDOM':
+            return {
+                ...state,
+                quizRandom: true
             }
         default:
             return state
@@ -59,6 +95,10 @@ const reducer = (state = initialState, action) => {
 
 export const typing = (key) => {
     return { type: 'TYPING', key: key }
+}
+
+export const random = () => {
+    return { type: 'RANDOM' }
 }
 
 function initStore(preloadedState = initialState) {
