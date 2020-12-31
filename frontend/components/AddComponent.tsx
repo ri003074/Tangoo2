@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default function Add() {
     const handleSubmit = (e) => {
-        e.preventDefault()
+        // e.preventDefault()
 
         const form = e.target
         const formData = new window.FormData(form)
