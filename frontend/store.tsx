@@ -5,40 +5,42 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 let store
 
 const initialState = {
-    count: 0,
     contents: [],
     missCount: 0,
-    quizNumber: 0,
+    currentQuizNumber: 0,
     wordLocation: 1,
-    wordBlank:''
+    wordBlank: '',
+    totalQuizNumber: 0,
+    correctCounter: 0,
+    studiedCounter:1,
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'TYPING':
-            if (state.contents[state.quizNumber].word_en[state.wordLocation] !== action.key) {
+            if (state.contents[state.currentQuizNumber].word_en[state.wordLocation] !== action.key) {
                 return {
                     ...state,
                     missCount: state.missCount + 1
                 }
             } else {
                 let wordLocation = state.wordLocation + 1
-                let quizNumber = state.quizNumber
+                let currentQuizNumber = state.currentQuizNumber
                 let missCount = state.missCount
-                let wordBlank = state.contents[state.quizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.quizNumber].word_blank.length - wordLocation);
+                let wordBlank = state.contents[state.currentQuizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.currentQuizNumber].word_blank.length - wordLocation);
                 console.log(wordBlank)
 
-                if (state.contents[state.quizNumber].word_en.length === wordLocation) {
-                    quizNumber = quizNumber + 1
+                if (state.contents[state.currentQuizNumber].word_en.length === wordLocation) {
+                    currentQuizNumber = currentQuizNumber + 1
                     wordLocation = 1
                     missCount = 0
-                    wordBlank = state.contents[quizNumber].word_blank
+                    wordBlank = state.contents[currentQuizNumber].word_blank
                 }
 
                 return {
                     ...state,
                     wordLocation: wordLocation,
-                    quizNumber: quizNumber,
+                    currentQuizNumber: currentQuizNumber,
                     missCount: missCount,
                     wordBlank: wordBlank,
                 }
@@ -47,7 +49,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 contents: action.data,
-                wordBlank:action.data[state.quizNumber].word_blank
+                wordBlank: action.data[state.currentQuizNumber].word_blank,
+                totalQuizNumber: action.data.length
             }
         default:
             return state
