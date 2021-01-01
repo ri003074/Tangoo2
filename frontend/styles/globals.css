@@ -23,6 +23,9 @@ a:hover{
   color:#FFF;
   background-color:#15202B;
 }
+*:focus{
+  outline: none;
+}
 
 .btn{
     color:#FFFF !important;
