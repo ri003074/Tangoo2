@@ -1,11 +1,14 @@
 version: "3"
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/src/app
-    command: sh -c "cd frontend && yarn dev"
-    ports:
-      - "3000:3000"
+    frontend2:
+       ports:
+         - "3000:3000"
+       build: ./frontend
+       container_name: 'frontend2'
+       volumes:
+         - ./frontend:/tmp/frontend
+         - /tmp/frontend/node_modules/
+       stdin_open: true
+       tty: true
+       command: >
+         bash -c "cd ../frontend && npm run dev"
