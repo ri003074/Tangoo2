@@ -1,15 +1,15 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
 import { typing } from '../store'
 
 export default function Quiz({ contents }) {
     const dispatch = useDispatch()
-    const missCount = useSelector((state) => state.missCount)
-    const currentQuizNumber = useSelector((state) => state.currentQuizNumber)
-    const totalQuizNumber = useSelector((state) => state.totalQuizNumber)
-    const wordBlank = useSelector((state) => state.wordBlank)
-    const correctCounter = useSelector((state) => state.correctCounter)
-    const studiedCounter = useSelector((state) => state.studiedCounter)
+    const missCount = useSelector((state:RootStateOrAny) => state.missCount)
+    const currentQuizNumber = useSelector((state:RootStateOrAny) => state.currentQuizNumber)
+    const totalQuizNumber = useSelector((state:RootStateOrAny) => state.totalQuizNumber)
+    const wordBlank = useSelector((state:RootStateOrAny) => state.wordBlank)
+    const correctCounter = useSelector((state:RootStateOrAny) => state.correctCounter)
+    const studiedCounter = useSelector((state:RootStateOrAny) => state.studiedCounter)
 
     const keydown = e => {
         dispatch(typing(e.key))

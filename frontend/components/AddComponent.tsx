@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default function Add() {
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { target: any }) => {
         // e.preventDefault()
 
         const form = e.target

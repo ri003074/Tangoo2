@@ -1,12 +1,12 @@
 import { Table } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
+import { DefaultRootState, RootStateOrAny, useDispatch } from 'react-redux'
 import { deleteContent } from '../store'
 import { useSelector } from 'react-redux'
 
 
 export default function Display() {
 
-    const contents = useSelector((state) => state.contents)
+    const contents = useSelector((state:RootStateOrAny) => state.contents)
     const dispatch = useDispatch()
 
     const deleteItem = (index) => {

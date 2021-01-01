@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, Store } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import axios from 'axios'
 
-let store
+let store: Store<{ contents: any; wordBlank: any; totalQuizNumber: any; studiedCounter: any; correctCounter: any; missCount: number; currentQuizNumber: number; wordLocation: number; quizRandom: boolean }, any>
 
 const initialState = {
     contents: [],
