@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, Store } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import axios from 'axios'
 
-let store: Store<{ contents: any; wordBlank: any; totalQuizNumber: any; studiedCounter: any; correctCounter: any; missCount: number; currentQuizNumber: number; wordLocation: number; quizRandom: boolean }, any>
+let store: Store<{ contents: any; wordBlank: string; totalQuizNumber: number; studiedCounter: number; correctCounter: number; missCount: number; currentQuizNumber: number; wordLocation: number; quizRandom: boolean }, any>
 
 const initialState = {
     contents: [],
@@ -14,7 +14,23 @@ const initialState = {
     totalQuizNumber: 0,
     correctCounter: 0,
     studiedCounter: 1,
-    quizRandom: false
+    quizRandom: false,
+}
+
+const speak = async (phrase: string, waitTime: Number) => {
+    var speak = new SpeechSynthesisUtterance();
+    speak.text = phrase
+    speak.rate = 1.0
+    speak.pitch = 0
+    speak.lang = 'en-US'
+    speechSynthesis.speak(speak)
+    sleep(waitTime)
+}
+
+const sleep = (waitMsec) => {
+    let startMsec = new Date();
+
+    while (new Date() - startMsec < waitMsec);
 }
 
 const reducer = (state = initialState, action) => {
@@ -22,12 +38,12 @@ const reducer = (state = initialState, action) => {
         case 'TYPING':
             if (state.contents[state.currentQuizNumber].word_en[state.wordLocation] === action.key || state.missCount > 5) {
 
-                let wordLocation = state.wordLocation + 1
-                let currentQuizNumber = state.currentQuizNumber
-                let missCount = state.missCount
-                let wordBlank = state.contents[state.currentQuizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.currentQuizNumber].word_blank.length - wordLocation);
-                let correctCounter = state.correctCounter
-                let studiedCounter = state.studiedCounter
+                let wordLocation: number = state.wordLocation + 1
+                let currentQuizNumber: number = state.currentQuizNumber
+                let missCount: number = state.missCount
+                let wordBlank: string = state.contents[state.currentQuizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.currentQuizNumber].word_blank.length - wordLocation);
+                let correctCounter: number = state.correctCounter
+                let studiedCounter: number = state.studiedCounter
                 let data = state.contents[state.currentQuizNumber]
 
                 console.log(wordBlank)
@@ -57,6 +73,7 @@ const reducer = (state = initialState, action) => {
                     wordBlank = state.contents[currentQuizNumber].word_blank
                     studiedCounter = state.contents[currentQuizNumber].s_counter
                     correctCounter = state.contents[currentQuizNumber].c_counter
+                    speak(state.contents[state.currentQuizNumber].phrase_en, state.contents[state.currentQuizNumber].phrase_en.length * 80);
                 }
                 return {
                     ...state,
@@ -65,7 +82,7 @@ const reducer = (state = initialState, action) => {
                     missCount: missCount,
                     wordBlank: wordBlank,
                     studiedCounter: studiedCounter,
-                    correctCounter: correctCounter
+                    correctCounter: correctCounter,
                 }
             } else {
                 return {
