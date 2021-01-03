@@ -17,7 +17,7 @@ const initialState = {
     quizRandom: false,
 }
 
-const speak = async (phrase: string, waitTime: Number) => {
+const speak = (phrase: string, waitTime: Number) => {
     var speak = new SpeechSynthesisUtterance();
     speak.text = phrase
     speak.rate = 1.0

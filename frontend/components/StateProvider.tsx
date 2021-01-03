@@ -13,10 +13,11 @@ const StateProvider = ({ children }) => {
 
         axios.get('http://localhost:8000/api/')
             .then((response) => {
+                type Contents = typeof response.data;
 
-                let tmpData = []
-                let contents = []
-                let contentsCount = response.data.length
+                let tmpData: Contents = []
+                let contents: Contents= []
+                let contentsCount: number = response.data.length
 
                 //Quiz用のデータを作成する。
                 for (let i = 0; i < contentsCount; i++) {
