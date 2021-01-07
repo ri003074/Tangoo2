@@ -20,7 +20,7 @@ export default function Quiz({ contents }) {
         return () => {
             window.removeEventListener('keydown', keydown)
         }
-    }, [dispatch])
+    }, [])
 
     return (
         <div>
