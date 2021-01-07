@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 const StateProvider = ({ children }) => {
     const dispatch = useDispatch()
 
-    const loadContents = (data) => {
+    const loadContents = (data: any) => {
         return { type: 'LOAD_DATA', data }
     }
 
