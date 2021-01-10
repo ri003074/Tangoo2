@@ -17,8 +17,15 @@ export default function Add() {
             word_en: english_word
         }
 
+        const token = localStorage.getItem('token')
+
         axios
-            .post("http://localhost:8000/api/", content)
+            .post("http://localhost:8000/api/", content, {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: token,
+                },
+            })
             .then(function (response) {
                 console.log(response.data)
             })

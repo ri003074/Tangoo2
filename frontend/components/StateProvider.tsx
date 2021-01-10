@@ -10,13 +10,19 @@ const StateProvider = ({ children }) => {
     }
 
     React.useEffect(() => {
+        let token = localStorage.getItem('token')
 
-        axios.get('http://localhost:8000/api/')
+        axios.get('http://localhost:8000/api/', {
+
+            headers: {
+                Authorization: token
+            },
+        })
             .then((response) => {
                 type Contents = typeof response.data;
 
                 let tmpData: Contents = []
-                let contents: Contents= []
+                let contents: Contents = []
                 let contentsCount: number = response.data.length
 
                 //Quiz用のデータを作成する。
