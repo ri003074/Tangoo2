@@ -92,6 +92,7 @@ const reducer = (state = initialState, action) => {
                     missCount: state.missCount + 1
                 }
             }
+
         case 'LOAD_DATA':
             return {
                 ...state,
@@ -107,6 +108,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 quizRandom: true
             }
+
         case 'DELETE':
             let contents = [...state.contents]
             console.log(contents.length)
