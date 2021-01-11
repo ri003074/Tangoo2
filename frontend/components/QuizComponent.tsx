@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
-import { typing } from '../store'
+import { typing, nextquiz } from '../store'
 
 export default function Quiz({ contents }) {
     const dispatch = useDispatch()
@@ -10,9 +10,12 @@ export default function Quiz({ contents }) {
     const wordBlank = useSelector((state: RootStateOrAny) => state.wordBlank)
     const correctCounter = useSelector((state: RootStateOrAny) => state.correctCounter)
     const studiedCounter = useSelector((state: RootStateOrAny) => state.studiedCounter)
+    const nextQuiz = useSelector((state: RootStateOrAny) => state.nextQuiz)
 
     const keydown = e => {
-        dispatch(typing(e.key))
+        if (!nextQuiz) {
+            dispatch(typing(e.key))
+        }
     }
 
     React.useEffect(() => {
@@ -20,7 +23,19 @@ export default function Quiz({ contents }) {
         return () => {
             window.removeEventListener('keydown', keydown)
         }
-    }, [])
+    }, [nextQuiz]) //TODO need check why this is working!!!
+
+    if (nextQuiz) {
+        var speech = new SpeechSynthesisUtterance();
+        speech.text = contents[currentQuizNumber].phrase_en
+        speech.rate = 1.0
+        speech.pitch = 0
+        speech.lang = 'en-US'
+        speechSynthesis.speak(speech)
+        speech.onend = () => {
+            dispatch(nextquiz())
+        }
+    }
 
     return (
         <div>

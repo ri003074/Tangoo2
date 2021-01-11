@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { createStore, applyMiddleware, Store } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { useDispatch } from 'react-redux';
 import axios from 'axios'
 
 let store: Store<{ contents: any; wordBlank: string; totalQuizNumber: number; studiedCounter: number; correctCounter: number; missCount: number; currentQuizNumber: number; wordLocation: number; quizRandom: boolean }, any>
@@ -15,26 +16,32 @@ const initialState = {
     correctCounter: 0,
     studiedCounter: 1,
     quizRandom: false,
-}
-
-const speak = (phrase: string, waitTime: Number) => {
-    var speak = new SpeechSynthesisUtterance();
-    speak.text = phrase
-    speak.rate = 1.0
-    speak.pitch = 0
-    speak.lang = 'en-US'
-    speechSynthesis.speak(speak)
-    sleep(waitTime)
-}
-
-const sleep = (waitMsec) => {
-    let startMsec = new Date();
-
-    while (new Date() - startMsec < waitMsec);
+    nextQuiz: false
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+
+        case 'NEXT_QUIZ':
+            let currentQuizNumber: number = state.currentQuizNumber
+            let wordLocation: number = state.wordLocation + 1
+            let wordBlank: string = state.contents[state.currentQuizNumber].word_en.substring(0, wordLocation) + '_'.repeat(state.contents[state.currentQuizNumber].word_blank.length - wordLocation);
+
+            if (state.quizRandom) {
+                currentQuizNumber = Math.floor(Math.random() * state.contents.length)
+            } else {
+                currentQuizNumber = currentQuizNumber + 1
+            }
+            wordBlank = state.contents[currentQuizNumber].word_blank
+
+            return {
+                ...state,
+                wordBlank: wordBlank,
+                currentQuizNumber: currentQuizNumber,
+                nextQuiz: false,
+                missCount: 0
+            }
+
         case 'TYPING':
             if (state.contents[state.currentQuizNumber].word_en[state.wordLocation] === action.key || state.missCount > 5) {
 
@@ -45,15 +52,12 @@ const reducer = (state = initialState, action) => {
                 let correctCounter: number = state.correctCounter
                 let studiedCounter: number = state.studiedCounter
                 let data = state.contents[state.currentQuizNumber]
+                let nextQuiz = false
 
                 console.log(wordBlank)
 
                 if (state.contents[state.currentQuizNumber].word_en.length === wordLocation) {
-                    if (state.quizRandom) {
-                        currentQuizNumber = Math.floor(Math.random() * state.contents.length)
-                    } else {
-                        currentQuizNumber = currentQuizNumber + 1
-                    }
+                    nextQuiz = true
 
                     data.s_counter = studiedCounter + 1
 
@@ -69,11 +73,8 @@ const reducer = (state = initialState, action) => {
 
                     console.log(currentQuizNumber)
                     wordLocation = 1
-                    missCount = 0
-                    wordBlank = state.contents[currentQuizNumber].word_blank
                     studiedCounter = state.contents[currentQuizNumber].s_counter
                     correctCounter = state.contents[currentQuizNumber].c_counter
-                    speak(state.contents[state.currentQuizNumber].phrase_en, state.contents[state.currentQuizNumber].phrase_en.length * 80);
                 }
                 return {
                     ...state,
@@ -83,6 +84,7 @@ const reducer = (state = initialState, action) => {
                     wordBlank: wordBlank,
                     studiedCounter: studiedCounter,
                     correctCounter: correctCounter,
+                    nextQuiz: nextQuiz,
                 }
             } else {
                 return {
@@ -126,6 +128,10 @@ const reducer = (state = initialState, action) => {
         default:
             return state
     }
+}
+
+export const nextquiz = () => {
+    return { type: 'NEXT_QUIZ' }
 }
 
 export const typing = (key) => {
